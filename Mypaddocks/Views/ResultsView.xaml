@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="Mypaddocks.Views.ResultsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mypaddocks.Views" 
+             xmlns:converters="clr-namespace:Mypaddocks.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:AreaFormatterConverter x:Key="AreaFormatter"/>
+        <converters:CoordinatesFormatterConverter x:Key="CoordinatesFormatter"/>
+        <converters:ContrastColorConverter x:Key="ContrastColorConverter"/>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <StackPanel Margin="20">
+            <TextBlock Text="Paddock Calculation Results" 
+                       Style="{StaticResource HeaderText}" 
+                       Margin="0 0 0 20"/>
+
+            <!-- Summary Card -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Summary" Style="{StaticResource SectionHeader}"/>
+
+                    <Grid Margin="0 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Row 1 -->
+                        <TextBlock Text="Total Farm Area:" Grid.Row="0" Grid.Column="0" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.FarmArea, Converter={StaticResource AreaFormatter}}" 
+                                   Grid.Row="0" Grid.Column="1" Style="{StaticResource ResultValue}"/>
+
+                        <TextBlock Text="Paddock Area:" Grid.Row="0" Grid.Column="2" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.PaddockArea, Converter={StaticResource AreaFormatter}}" 
+                                   Grid.Row="0" Grid.Column="3" Style="{StaticResource ResultValue}"/>
+
+                        <!-- Row 2 -->
+                        <TextBlock Text="Total Paddocks:" Grid.Row="1" Grid.Column="0" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.TotalFittingPaddocks}" 
+                                   Grid.Row="1" Grid.Column="1" Style="{StaticResource ResultValue}"/>
+
+                        <TextBlock Text="Remaining Area:" Grid.Row="1" Grid.Column="2" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.RemainingArea, Converter={StaticResource AreaFormatter}}" 
+                                   Grid.Row="1" Grid.Column="3" Style="{StaticResource ResultValue}"/>
+
+                        <!-- Row 3 -->
+                        <TextBlock Text="Paddocks per Row:" Grid.Row="2" Grid.Column="0" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.PaddocksPerRow}" 
+                                   Grid.Row="2" Grid.Column="1" Style="{StaticResource ResultValue}"/>
+
+                        <TextBlock Text="Paddocks per Column:" Grid.Row="2" Grid.Column="2" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.PaddocksPerColumn}" 
+                                   Grid.Row="2" Grid.Column="3" Style="{StaticResource ResultValue}"/>
+
+                        <!-- Row 4 -->
+                        <!--<TextBlock Text="Optimal Layout:" Grid.Row="3" Grid.Column="0" Style="{StaticResource ResultLabel}"/>
+                        <TextBlock Text="{Binding Result.PaddockConfiguration.LayoutOption}" 
+                                   Grid.Row="3" Grid.Column="1" Style="{StaticResource ResultValue}"/>-->
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Paddock Details -->
+            <Border Style="{StaticResource CardStyle}" Margin="0 15 0 0">
+                <StackPanel>
+                    <TextBlock Text="Paddock Details" Style="{StaticResource SectionHeader}"/>
+
+                    <DataGrid ItemsSource="{Binding PaddockDetails}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Margin="0 10 0 0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Paddock" Binding="{Binding Name}" Width="Auto"/>
+                            <DataGridTextColumn Header="Length" Binding="{Binding Length, StringFormat={}{0:N2}m}"/>
+                            <DataGridTextColumn Header="Width" Binding="{Binding Width, StringFormat={}{0:N2}m}"/>
+                            <DataGridTextColumn Header="Area" Binding="{Binding Area, StringFormat={}{0:N2}m²}"/>
+                            <DataGridTextColumn Header="Coordinates" 
+                                               Binding="{Binding Coordinates, Converter={StaticResource CoordinatesFormatter}}"
+                                               Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <!-- Visual Representation -->
+            <Border Style="{StaticResource CardStyle}" Margin="0 15 0 0">
+                <StackPanel>
+                    <TextBlock Text="Farm Layout Visualization" Style="{StaticResource SectionHeader}"/>
+
+                    <Border BorderBrush="LightSkyBlue" BorderThickness="1" Margin="0 10 0 0" Padding="10">
+                        <ItemsControl ItemsSource="{Binding PaddockVisuals}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    
+                                        <!-- Note: Width (X) binds to Length, Height (Y) binds to Width -->
+                                        <Canvas Width="{Binding Result.FarmDimensions.Length}"
+                        Height="{Binding Result.FarmDimensions.Width}"
+                        Background="LightGray">
+                                        </Canvas>
+                                    
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="ContentPresenter">
+                                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="{Binding Width}" 
+                        Height="{Binding Height}"
+                        BorderBrush="#FF333333"
+                        BorderThickness="1"
+                        Background="{Binding BackgroundColor}"
+                        Opacity="0.7">
+                                        <TextBlock Text="{Binding Name}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontWeight="Bold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+
+                    <TextBlock Text="Note: This is a simplified representation. Actual paddocks may vary slightly based on exact measurements." 
+                               Style="{StaticResource NoteText}" Margin="0 10 0 0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Action Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0">
+                <Button Content="Export to CSV" 
+                        Command="{Binding ExportCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="0 0 10 0"/>
+                <Button Content="Start Over" 
+                        Command="{Binding BackCommand}"
+                        Style="{StaticResource PrimaryButton}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
