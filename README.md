@@ -39,4 +39,4 @@ A WPF application for farmers to optimize paddock layouts based on farm dimensio
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/paddock-calculator.git
+   git clone https://github.com/Vicky642/Paddocks-Calculator.git
