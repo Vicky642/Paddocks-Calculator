@@ -16,6 +16,7 @@ namespace Mypaddocks.Converters
             {
                 return $"TL:({coords[0]:N1},{coords[1]:N1}) BR:({coords[2]:N1},{coords[3]:N1})";
             }
+            //string k = y.ToString("C", new CultureInfo("en-KE"));
             return string.Empty;
         }
 

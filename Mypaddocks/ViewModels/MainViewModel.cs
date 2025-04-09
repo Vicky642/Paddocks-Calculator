@@ -12,12 +12,35 @@ namespace Mypaddocks.ViewModels
 {
    public class MainViewModel : ViewModelBase
     {
+
         private ViewModelBase _currentView;
         private readonly ICalculationRepository _calculationRepository;
         private FarmDimensions _farmDimensions;
         private PaddockConfiguration _paddockConfiguration;
         private FarmDimensionRepository _farmDimensionRepository;
         private PaddockConfigurationRepository _paddockConfigurationRepository;
+
+        public MainViewModel()
+        {
+            // Initialize repositories
+            _calculationRepository = new CalculationRepository();
+            _farmDimensionRepository = new FarmDimensionRepository();
+            _paddockConfigurationRepository = new PaddockConfigurationRepository();
+            // Initialize models
+            FarmDimensions = new FarmDimensions();
+            PaddockConfiguration = new PaddockConfiguration();
+
+            // Initialize view models
+            FarmDimensionsVM = new FarmDimensionsViewModel(_farmDimensionRepository);
+            PaddockConfigurationVM = new PaddockConfigurationViewModel(_paddockConfigurationRepository);
+
+            CurrentView = FarmDimensionsVM;
+
+            // Initialize commands
+            FarmDimensionsCommand = new RelayCommand(_ => NavigateToFarmDimensions());
+            PaddockConfigurationCommand = new RelayCommand(_ => NavigateToPaddockConfiguration());
+            ResultsCommand = new RelayCommand(_ => NavigateToResults());
+        }
         public ViewModelBase CurrentView
         {
             get => _currentView;
@@ -43,27 +66,7 @@ namespace Mypaddocks.ViewModels
         public ICommand PaddockConfigurationCommand { get; }
         public ICommand ResultsCommand { get; }
 
-        public MainViewModel()
-        {
-            // Initialize repositories
-            _calculationRepository = new CalculationRepository();
-            _farmDimensionRepository = new FarmDimensionRepository();
-            _paddockConfigurationRepository = new PaddockConfigurationRepository();
-            // Initialize models
-            FarmDimensions = new FarmDimensions();
-            PaddockConfiguration = new PaddockConfiguration();
-
-            // Initialize view models
-            FarmDimensionsVM = new FarmDimensionsViewModel(_farmDimensionRepository);
-            PaddockConfigurationVM = new PaddockConfigurationViewModel(_paddockConfigurationRepository);
-
-            CurrentView = FarmDimensionsVM;
-
-            // Initialize commands
-            FarmDimensionsCommand = new RelayCommand(_ => NavigateToFarmDimensions());
-            PaddockConfigurationCommand = new RelayCommand(_ => NavigateToPaddockConfiguration());
-            ResultsCommand = new RelayCommand(_ => NavigateToResults());
-        }
+        
 
         public void NavigateToFarmDimensions()
         {

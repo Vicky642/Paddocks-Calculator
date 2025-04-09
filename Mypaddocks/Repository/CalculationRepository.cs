@@ -37,7 +37,7 @@ namespace Mypaddocks.Repository
                 PaddockConfiguration = config
             };
 
-            // Perform the calculations (similar to your original console logic)
+            // Perform the calculations
             (bool isValid, double length, double width, string layoutOption) = FindOptimalPaddockDimensions(
                 config.CowsPerPaddock,
                 dimensions.Length,

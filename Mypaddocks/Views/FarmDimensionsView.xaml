@@ -7,7 +7,7 @@
              xmlns:local1="clr-namespace:Mypaddocks.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+    <UserControl.Resources>        
         <local1:StringToIntConverter x:Key="StringToIntConverter"/>
     </UserControl.Resources>
     <Grid>
@@ -29,7 +29,7 @@
                         HorizontalAlignment="Right"
                         Margin="0 20 0 0"/>
 
-                <!-- ✅ Display Area Result (Fixed Visibility) -->
+                <!--  Display Area Result (Fixed Visibility) -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                             Visibility="{Binding IsAreaCalculated, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Text="Area: " Style="{StaticResource NormalText}"/>
@@ -37,14 +37,14 @@
                     <TextBlock Text=" m²" Style="{StaticResource NormalText}"/>
                 </StackPanel>
 
-                <!-- ✅ Error Message for Length (Fixed Visibility) -->
+                <!--  Error Message for Length (Fixed Visibility) -->
                 <Border Style="{StaticResource ErrorMessage}" 
                         Visibility="{Binding ShowLengthError, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Text="Farm length must be at least 210m" 
                                Style="{StaticResource ErrorText}"/>
                 </Border>
 
-                <!-- ✅ Error Message for Width (Fixed Visibility) -->
+                <!-- Error Message for Width (Fixed Visibility) -->
                 <Border Style="{StaticResource ErrorMessage}" 
                         Visibility="{Binding ShowWidthError, Converter={StaticResource BoolToVisibilityConverter}}"
                         Margin="0 5 0 0">

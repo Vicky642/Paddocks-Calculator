@@ -16,7 +16,7 @@
 
             <local1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <local1:ContrastColorConverter x:Key="ContrastColorConverter"/>
-            <!-- Add these DataTemplates -->
+            
             <DataTemplate DataType="{x:Type vm:FarmDimensionsViewModel}">
                 <views:FarmDimensionsView/>
             </DataTemplate>
@@ -25,7 +25,7 @@
                 <views:PaddockConfigurationView/>
             </DataTemplate>
 
-            <!-- Add if you have a ResultsViewModel -->
+            <!--  ResultsViewModel -->
             <DataTemplate DataType="{x:Type vm:ResultsViewModel}">
                 <views:ResultsView/>
             </DataTemplate>
